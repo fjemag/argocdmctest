@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: cloudowski/whack_a_pod-api:latest
+        image: gcr.io/google-samples/whack-a-pod/api:latest
         ports:
         - containerPort: 8080
 ---
