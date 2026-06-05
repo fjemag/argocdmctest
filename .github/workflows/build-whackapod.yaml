@@ -13,11 +13,33 @@ jobs:
       packages: write
 
     steps:
+      - name: Checkout argocdmctest
+        uses: actions/checkout@v4
+
       - name: Checkout whack_a_pod source
         uses: actions/checkout@v4
         with:
           repository: tpryan/whack_a_pod
           path: whack_a_pod
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Build Go binaries
+        run: |
+          cd $GITHUB_WORKSPACE/whack_a_pod/apps/api/containers
+          go mod init whack_a_pod/api
+          go mod tidy
+          GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o main .
+          ls -la main
+
+          cd $GITHUB_WORKSPACE/whack_a_pod/apps/admin/containers
+          go mod init whack_a_pod/admin
+          go mod tidy
+          GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o main .
+          ls -la main
 
       - name: Log in to ghcr.io
         uses: docker/login-action@v3
@@ -29,20 +51,20 @@ jobs:
       - name: Build and push api
         uses: docker/build-push-action@v5
         with:
-          context: whack_a_pod/apps/api
+          context: whack_a_pod/apps/api/containers
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/whack-a-pod-api:latest
 
       - name: Build and push game
         uses: docker/build-push-action@v5
         with:
-          context: whack_a_pod/apps/game
+          context: whack_a_pod/apps/game/containers
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/whack-a-pod-game:latest
 
       - name: Build and push admin
         uses: docker/build-push-action@v5
         with:
-          context: whack_a_pod/apps/admin
+          context: whack_a_pod/apps/admin/containers
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/whack-a-pod-admin:latest
