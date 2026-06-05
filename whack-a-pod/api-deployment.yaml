@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: gcr.io/google-samples/whack-a-pod/api:latest
+        image: spkane/whack-a-pod:api
         ports:
         - containerPort: 8080
 ---

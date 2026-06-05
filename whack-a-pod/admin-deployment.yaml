@@ -16,7 +16,7 @@ spec:
       serviceAccountName: wap-admin
       containers:
       - name: admin
-        image: gcr.io/google-samples/whack-a-pod/api:latest
+        image: spkane/whack-a-pod:admin
         env:
         - name: NAMESPACE
           value: wap-game
