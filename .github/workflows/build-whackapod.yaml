@@ -29,9 +29,20 @@ jobs:
 
       - name: Build Go binaries
         run: |
-          cd whack_a_pod/apps/api/containers && GOOS=linux GOARCH=amd64 go build -o main .
-          cd $GITHUB_WORKSPACE/whack_a_pod/apps/game/containers && GOOS=linux GOARCH=amd64 go build -o main . 2>/dev/null || true
-          cd $GITHUB_WORKSPACE/whack_a_pod/apps/admin/containers && GOOS=linux GOARCH=amd64 go build -o main . 2>/dev/null || true
+          cd whack_a_pod/apps/api/containers
+          go mod init whack_a_pod/api
+          go mod tidy
+          GOOS=linux GOARCH=amd64 go build -o main .
+
+          cd $GITHUB_WORKSPACE/whack_a_pod/apps/game/containers
+          go mod init whack_a_pod/game 2>/dev/null || true
+          go mod tidy
+          GOOS=linux GOARCH=amd64 go build -o main . 2>/dev/null || true
+
+          cd $GITHUB_WORKSPACE/whack_a_pod/apps/admin/containers
+          go mod init whack_a_pod/admin 2>/dev/null || true
+          go mod tidy
+          GOOS=linux GOARCH=amd64 go build -o main . 2>/dev/null || true
 
       - name: Log in to ghcr.io
         uses: docker/login-action@v3
