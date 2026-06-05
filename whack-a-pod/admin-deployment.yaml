@@ -20,6 +20,8 @@ spec:
         env:
         - name: NAMESPACE
           value: wap-game
+        - name: DOCKERREPO
+          value: ghcr.io/fjemag
         ports:
         - containerPort: 8080
 ---
