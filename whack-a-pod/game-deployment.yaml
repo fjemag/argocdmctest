@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: game
-        image: spkane/whack-a-pod:game
+        image: ghcr.io/fjemag/whack-a-pod-game:latest
         ports:
         - containerPort: 8080
 ---

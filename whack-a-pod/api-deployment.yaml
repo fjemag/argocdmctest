@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: spkane/whack-a-pod:api
+        image: ghcr.io/fjemag/whack-a-pod-api:latest
         ports:
         - containerPort: 8080
 ---
